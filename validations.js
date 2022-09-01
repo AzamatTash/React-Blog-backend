@@ -11,3 +11,10 @@ export const loginValidation = [
     body('email', 'Не верный формат почты').isEmail(),
     body('password', 'Не верный логин или пароль'),
 ];
+
+export const postCreateValidation = [
+    body('title', 'Введите заголовок поста').isLength({min: 3}).isString(),
+    body('text', 'Введите текст поста').isLength({min:1}).isString(),
+    body('tags', 'Не верный формат тегов').optional().isArray(),
+    body('imageUrl', 'Не верная ссылка на изображение').optional().isString(),
+];
