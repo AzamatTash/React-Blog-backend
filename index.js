@@ -7,7 +7,7 @@ import { loginValidation, registerValidation, postCreateValidation } from './val
 import { handleValidationErrors, checkAuth }from './utils/index.js';
 
 mongoose
-    .connect('mongodb+srv://admin:wwwwww@cluster0.mozteuu.mongodb.net/blog?retryWrites=true&w=majority')
+    .connect(process.env.MONGODB_URL)
     .then(() => console.log('DB ok'))
     .catch((err) => console.log('DB err', err))
 
@@ -15,6 +15,9 @@ const app = express();
 
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
+        if(!fs.existsSync('uploads')) {
+            fs.mkdirSync('uploads')
+        }
         cb(null, 'uploads');
     },
     filename: (_, file, cb) => {
@@ -41,7 +44,7 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
     res.json({ url: `/uploads/${req.file.originalname}`, });
 });
 
-app.listen(4444, (err) => {
+app.listen(process.env.PORT || 4444, (err) => {
     if(err) {
         return console.log(err);
     }
