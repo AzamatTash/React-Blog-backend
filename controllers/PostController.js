@@ -14,7 +14,6 @@ export const create = async (req, res) => {
 
         res.json(post);
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             message: 'Не удалось создать пост'
         });
@@ -23,11 +22,26 @@ export const create = async (req, res) => {
 
 export const getAll = async (req, res) => {
     try {
-        const posts = await PostModel.find().populate('user').exec();
+        const findItem = req.query;
+        const {sort} = req.query;
+        let posts;
+
+        switch (sort)  {
+            case 'views':
+                posts = await PostModel.find(findItem).sort({viewsCount: -1}).populate('user').exec();
+                break;
+            case 'title':
+                posts = await PostModel.find(findItem).sort({title: -1}).populate('user').exec();
+                break;
+            case 'date':
+                posts = await PostModel.find(findItem).sort({createdAt: 1}).populate('user').exec();
+                break;
+            default:
+                posts = await PostModel.find(findItem).sort({createdAt: -1}).populate('user').exec();
+        }
 
         res.json(posts);
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             message: 'Не удалось получить посты'
         });
@@ -66,7 +80,6 @@ export const getOne = (req, res) => {
             }
         );
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             message: 'Не удалось получить пост'
         });
@@ -101,7 +114,6 @@ export const remove = (req, res) => {
             }
         );
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             message: 'Не удалось удалить пост'
         });
@@ -129,7 +141,6 @@ export const update = async (req, res) => {
             success: true,
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             message: 'Не удалось обнавить пост'
         });
@@ -144,7 +155,6 @@ export const getLastTags = async (req, res) => {
 
         res.json(tags);
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             message: 'Не удалось получить теги'
         });

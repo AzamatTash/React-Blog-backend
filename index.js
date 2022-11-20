@@ -8,9 +8,9 @@ import { loginValidation, registerValidation, postCreateValidation } from './val
 import { handleValidationErrors, checkAuth }from './utils/index.js';
 
 mongoose
-    .connect(process.env.MONGODB_URL)
+    .connect(process.env.MONGODB_URL || 'mongodb+srv://admin:wwwwww@cluster0.mozteuu.mongodb.net/blog?retryWrites=true&w=majority')
     .then(() => console.log('DB ok'))
-    .catch((err) => console.log('DB err', err))
+    .catch((err) => console.error(err))
 
 const app = express();
 
@@ -49,7 +49,6 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
 
 app.listen(process.env.PORT || 4444, (err) => {
     if(err) {
-        return console.log(err);
+        return console.error(err);
     }
-    console.log('Server ok');
 });
