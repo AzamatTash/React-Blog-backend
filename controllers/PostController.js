@@ -64,7 +64,6 @@ export const getOne = (req, res) => {
             },
             (err, doc) => {
                 if(err) {
-                    console.log(err);
                     return res.status(500).json({
                         message: 'Не удалось найти данный пост'
                     });
@@ -78,7 +77,7 @@ export const getOne = (req, res) => {
 
                 res.json(doc);
             }
-        );
+        ).populate('user');
     } catch (err) {
         res.status(500).json({
             message: 'Не удалось получить пост'
@@ -96,7 +95,6 @@ export const remove = (req, res) => {
             },
             (err, doc) => {
                 if(err) {
-                    console.log(err);
                     return res.status(500).json({
                         message: 'Не удалось удалить данный пост'
                     });
