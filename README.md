@@ -1,4 +1,4 @@
-<h1 align="center">React Blog Backend</h1>
+<h1 align="center">Blog</h1>
 
 <h3 align="left">Stack:</h3>
 
